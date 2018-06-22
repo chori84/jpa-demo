@@ -27,6 +27,10 @@ public class Sawon {
 
     protected Sawon() {}
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     @Override
     public String toString() {
         String result = String.format("Sawon [id=%d, name='%s']%n", id, name);

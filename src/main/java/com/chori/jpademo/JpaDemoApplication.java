@@ -1,11 +1,7 @@
 package com.chori.jpademo;
 
-import com.chori.jpademo.model.Addr;
-import com.chori.jpademo.model.Dept;
-import com.chori.jpademo.model.Emp;
-import com.chori.jpademo.repository.AddrRepository;
-import com.chori.jpademo.repository.DeptRepository;
-import com.chori.jpademo.repository.EmpRepository;
+import com.chori.jpademo.model.*;
+import com.chori.jpademo.repository.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +27,12 @@ public class JpaDemoApplication implements CommandLineRunner {
 
 	@Autowired
 	AddrRepository addrRepository;
+
+	@Autowired
+	SawonRepository sawonRepository;
+
+	@Autowired
+	HobbyRepository hobbyRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(JpaDemoApplication.class, args);
@@ -100,5 +102,74 @@ public class JpaDemoApplication implements CommandLineRunner {
 		Emp ea2 = Emp.builder().ename("하와이 길동").build();
 		ea2.setAddr(addr2);
 		empRepository.save(ea2);
+
+		logger.info("================================================================");
+
+		saveSawonsAndHobbies();
+		sawonRepository.flush();
+		deleteSawon();
+		sawonRepository.flush();
+		updateSawon();
+		sawonRepository.flush();
+		deleteSawonAndHobby();
+	}
+
+	private Long sawon1Id;
+	private Long sawon2Id;
+	private Long hobby1Id;
+
+	private void saveSawonsAndHobbies() {
+		Sawon s1 = Sawon.builder().name("1길동").hobbies(new ArrayList<Hobby>() {
+			{
+				add(Hobby.builder().name("취미1").build());
+				add(Hobby.builder().name("취미2").build());
+			}
+		}).build();
+
+		Sawon s2 = Sawon.builder().name("2길동").hobbies(new ArrayList<Hobby>() {
+			{
+				add(Hobby.builder().name("취미3").build());
+			}
+		}).build();
+
+		sawonRepository.saveAll(new HashSet<Sawon>(){
+			{
+				add(s1);
+				add(s2);
+			}
+		});
+
+		sawon1Id = s1.getId();
+		sawon2Id = s2.getId();
+		hobby1Id = s1.getHobbies().get(0).getId();
+
+		for (Sawon s : sawonRepository.findAll()) {
+			logger.info(s.toString());
+		}
+	}
+
+	private void deleteSawon() {
+		Sawon s2 = sawonRepository.findById(sawon2Id).get();
+		logger.info("삭제될 사원 => " + s2.toString());
+		sawonRepository.delete(s2);
+	}
+
+	private void updateSawon() {
+		Sawon s1 = sawonRepository.findById(sawon1Id).get();
+		logger.info("수정될 사원 => " + s1.toString());
+		s1.getHobbies().add(Hobby.builder().name("취미4").build());
+		s1.setName("11길동");
+		sawonRepository.save(s1);
+	}
+
+	private void deleteSawonAndHobby() {
+		Sawon s1 = sawonRepository.findById(sawon1Id).get();
+		Hobby h1 = hobbyRepository.findById(hobby1Id).get();
+
+		if(s1.getHobbies().contains(h1)) {
+			s1.getHobbies().remove(h1);
+		}
+
+		sawonRepository.save(s1);
 	}
 }

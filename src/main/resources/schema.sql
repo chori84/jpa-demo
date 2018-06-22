@@ -41,7 +41,7 @@ create table hobby
 (
   id bigint not null primary key,
   name varchar(255) null
-)
+);
 
 DROP TABLE IF EXISTS sawon_hobby;
 
@@ -50,4 +50,4 @@ create table sawon_hobby
   sawon_id bigint not null,
   hobby_id bigint not null,
   primary key(sawon_id, hobby_id)
-)
+);
