@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Set;
 
 @SpringBootApplication
-public class JpaDemoApplication implements CommandLineRunner {
+public class JpaDemoApplication {
 	private static final Logger logger = LoggerFactory.getLogger(JpaDemoApplication.class);
 
 	@Autowired
@@ -38,7 +38,7 @@ public class JpaDemoApplication implements CommandLineRunner {
 		SpringApplication.run(JpaDemoApplication.class, args);
 	}
 
-	@Override
+//	@Override
 	@Transactional
 	public void run(String... args) throws Exception {
 		Emp e1 = Emp.builder().ename("김교육").build();

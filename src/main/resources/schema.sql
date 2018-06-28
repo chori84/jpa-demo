@@ -51,3 +51,38 @@ create table sawon_hobby
   hobby_id bigint not null,
   primary key(sawon_id, hobby_id)
 );
+
+DROP TABLE IF EXISTS student;
+
+create table student
+(
+  id bigint not null primary key,
+  name varchar(10) not null,
+  professor_id bigint not null
+);
+
+DROP TABLE IF EXISTS subject;
+
+create table subject
+(
+  id bigint not null primary key,
+  name varchar(10) not null
+);
+
+DROP TABLE IF EXISTS student_subject;
+
+create table student_subject
+(
+  student_id bigint not null,
+  subject_id bigint not null,
+  primary key(student_id, subject_id)
+);
+
+DROP TABLE IF EXISTS professor;
+
+create table professor
+(
+  id bigint not null primary key,
+  name varchar(10) not null,
+  subject_id bigint null
+);
