@@ -1,11 +1,11 @@
 package com.chori.jpademo.edu.service;
 
-import com.chori.jpademo.edu.model.Professor;
+import com.chori.jpademo.edu.dto.professor.ProfessorResponse;
 
 import java.util.List;
 
 public interface ProfessorService {
-    List<Professor> findAll();
+    List<ProfessorResponse> findAll();
 
-    Professor findById(Long id);
+    ProfessorResponse findById(Long id);
 }

@@ -1,24 +1,24 @@
 package com.chori.jpademo.edu.model;
 
-import com.chori.jpademo.edu.dto.ProfessorDto;
-import com.chori.jpademo.edu.dto.StudentDto;
-import com.chori.jpademo.edu.dto.SubjectForStudent;
+import com.chori.jpademo.edu.dto.student.StudentInfo;
+import com.chori.jpademo.edu.dto.student.StudentResponse;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @AllArgsConstructor
 @Builder
 @Entity
 @Access(AccessType.FIELD)
+@SequenceGenerator(name = "STUDENT_SEQ_GENERATOR", sequenceName = "sequence_student", initialValue = 17, allocationSize = 1)
 public class Student {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "STUDENT_SEQ_GENERATOR")
     private Long id;
     private String name;
 
@@ -35,19 +35,19 @@ public class Student {
 
     protected Student() {}
 
-    public StudentDto convertToDto() {
-        List<SubjectForStudent> subjects = new ArrayList<>();
-        if(!this.subjects.isEmpty()) {
-            this.subjects.forEach(subject ->
-                    subjects.add(subject.convertToSubjectForStudent())
-            );
-        }
-
-        return StudentDto.builder()
+    public StudentResponse convertToResponse() {
+        return StudentResponse.builder()
                 .id(this.getId())
                 .name(this.getName())
-                .subjects(subjects)
-                .professor(this.professor.convertToDto())
+                .subjects(this.subjects == null ? null : this.subjects
+                        .stream()
+                        .map(subject -> subject.convertToInfo())
+                        .collect(Collectors.toList()))
+                .professor(this.professor == null ? null : this.professor.convertToInfo())
                 .build();
+    }
+
+    public StudentInfo convertToInfo() {
+        return StudentInfo.builder().id(this.id).name(this.name).build();
     }
 }

@@ -1,11 +1,10 @@
 package com.chori.jpademo.edu.controller;
 
-import com.chori.jpademo.edu.dto.StudentDto;
+import com.chori.jpademo.edu.dto.student.StudentRequest;
+import com.chori.jpademo.edu.dto.student.StudentResponse;
 import com.chori.jpademo.edu.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -21,7 +20,18 @@ public class StudentController {
     }
 
     @GetMapping
-    public List<StudentDto> findAll() {
+    public List<StudentResponse> findAll() {
         return studentService.findAll();
     }
+
+    @GetMapping("/{id}")
+    public StudentResponse findById(@PathVariable(value = "id") Long id) {
+        return studentService.findById(id);
+    }
+
+    @PostMapping
+    public void registerStudent(@RequestBody StudentRequest student) {
+        studentService.save(student.getName(), student.getProfessorId());
+    }
+
 }

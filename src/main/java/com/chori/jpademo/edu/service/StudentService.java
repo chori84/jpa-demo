@@ -1,11 +1,13 @@
 package com.chori.jpademo.edu.service;
 
-import com.chori.jpademo.edu.dto.StudentDto;
+import com.chori.jpademo.edu.dto.student.StudentResponse;
 
 import java.util.List;
 
 public interface StudentService {
-    List<StudentDto> findAll();
+    List<StudentResponse> findAll();
 
-    StudentDto findById(Long id);
+    StudentResponse findById(Long id);
+
+    void save(String name, Long professorId);
 }

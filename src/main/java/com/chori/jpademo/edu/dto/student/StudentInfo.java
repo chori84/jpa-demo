@@ -1,13 +1,11 @@
-package com.chori.jpademo.edu.dto;
+package com.chori.jpademo.edu.dto.student;
 
 import lombok.Builder;
 import lombok.Getter;
 
-import java.util.List;
-
 @Getter
 @Builder
-public class ProfessorDto {
+public class StudentInfo {
     private Long id;
     private String name;
 }

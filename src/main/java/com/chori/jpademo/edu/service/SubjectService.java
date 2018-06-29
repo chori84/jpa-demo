@@ -1,11 +1,11 @@
 package com.chori.jpademo.edu.service;
 
-import com.chori.jpademo.edu.model.Subject;
+import com.chori.jpademo.edu.dto.subject.SubjectResponse;
 
 import java.util.List;
 
 public interface SubjectService {
-    List<Subject> findAll();
+    List<SubjectResponse> findAll();
 
-    Subject findById(Long id);
+    SubjectResponse findById(Long id);
 }
